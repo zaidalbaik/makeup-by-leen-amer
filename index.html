@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makeup By Leen Amer</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe1ed, #fff4f7, #f8d5ff);
+      color: #71334f;
+      text-align: center;
+    }
+
+    header {
+      padding: 25px 15px 12px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #d63384;
+      font-size: clamp(27px, 5vw, 42px);
+    }
+
+    header p {
+      color: #98627b;
+      margin-top: 8px;
+    }
+
+    .game {
+      width: min(100% - 24px, 950px);
+      margin: 15px auto 35px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 0.85fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .girl-card,
+    .makeup-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px solid #ffc4dc;
+      border-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 12px 30px #c65c871c;
+    }
+
+    .girl-card {
+      background: linear-gradient(#fff0f6, #fff9fc);
+    }
+
+    .girl-card h2,
+    .makeup-card h2 {
+      color: #d63384;
+      margin: 4px 0 15px;
+    }
+
+    .portrait {
+      width: 100%;
+      max-width: 370px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .hint {
+      color: #a66d88;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .category {
+      margin: 17px 0;
+      text-align: left;
+    }
+
+    .category h3 {
+      font-size: 16px;
+      margin: 0 0 10px;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .swatch {
+      width: 39px;
+      height: 39px;
+      border-radius: 50%;
+      border: 3px solid white;
+      outline: 1px solid #edbad0;
+      cursor: pointer;
+      transition: transform 0.2s, outline 0.2s;
+    }
+
+    .swatch:hover {
+      transform: scale(1.12);
+    }
+
+    .swatch:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #a62b68;
+      outline-offset: 3px;
+    }
+
+    .swatch.active {
+      outline: 3px solid #d63384;
+      outline-offset: 2px;
+    }
+
+    .tool {
+      padding: 9px 12px;
+      border: 1px solid #f1b6d0;
+      border-radius: 14px;
+      background: #fff4f9;
+      color: #a12c67;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .tool:hover,
+    .tool.active {
+      background: #d63384;
+      color: white;
+    }
+
+    .action {
+      display: flex;
+      gap: 10px;
+      margin-top: 23px;
+    }
+
+    .action button {
+      flex: 1;
+      padding: 13px 8px;
+      border: none;
+      border-radius: 15px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #reset {
+      background: #ffe1ed;
+      color: #a12c67;
+    }
+
+    #surprise {
+      background: #d63384;
+      color: white;
+    }
+
+    #message {
+      min-height: 24px;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #d63384;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 0 15px 25px;
+      color: #a66d88;
+      font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+      .game {
+        grid-template-columns: 1fr;
+      }
+
+      .girl-card,
+      .makeup-card {
+        padding: 16px;
+      }
+
+      .portrait {
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>💖 Makeup By Leen Amer 💖</h1>
+    <p>Your beauty studio — create your own beautiful look!</p>
+  </header>
+
+  <main class="game">
+    <section class="girl-card">
+      <h2>✨ Your Model ✨</h2>
+
+      <svg id="girl" class="portrait"
+           viewBox="0 0 300 390"
+           xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="Girl character with customizable makeup">
+
+        <defs>
+          <linearGradient id="hairColor" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#65351f"/>
+            <stop offset="100%" stop-color="#29151b"/>
+          </linearGradient>
+
+          <linearGradient id="skinColor" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffdfc5"/>
+            <stop offset="100%" stop-color="#e8a986"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Background -->
+        <circle cx="150" cy="185" r="137" fill="#ffe1ed"/>
+        <circle cx="35" cy="105" r="7" fill="#f6a9ce"/>
+        <circle cx="263" cy="135" r="8" fill="#f6a9ce"/>
+        <path d="M35 235 l5 10 10 5 -10 5 -5 10 -5 -10 -10 -5 10 -5z"
+              fill="#e991bd"/>
+        <path d="M263 245 l4 8 8 4 -8 4 -4 8 -4 -8 -8 -4 8 -4z"
+              fill="#e991bd"/>
+
+        <!-- Hair behind face -->
+        <path id="backHair"
+          d="M68 145 Q55 45 150 40 Q245 45 232 145
+             L245 310 Q225 350 210 325 L215 140
+             Q200 65 150 65 Q100 65 85 140
+             L90 325 Q70 350 55 310 Z"
+          fill="url(#hairColor)"/>
+
+        <!-- Neck -->
+        <path d="M122 248 L122 292 L178 292 L178 248"
+              fill="url(#skinColor)"/>
+
+        <!-- Shirt -->
+        <path d="M80 390 L85 325 Q105 292 125 290
+                 Q150 310 175 290 Q200 292 215 325
+                 L220 390 Z"
+              fill="#ed86b6"/>
+        <path d="M125 290 Q150 340 175 290"
+              fill="none" stroke="#fff0f6" stroke-width="5"/>
+
+        <!-- Ears -->
+        <ellipse cx="82" cy="181" rx="14" ry="23" fill="#efb999"/>
+        <ellipse cx="218" cy="181" rx="14" ry="23" fill="#efb999"/>
+
+        <!-- Face -->
+        <path id="face"
+          d="M86 120 Q88 75 150 72 Q212 75 214 120
+             L207 210 Q198 265 150 279
+             Q102 265 93 210 Z"
+          fill="url(#skinColor)"/>
+
+        <!-- Hair fringe -->
+        <path id="bangs"
+          d="M79 145 Q68 61 145 53 Q220 52 222 135
+             Q202 111 180 98 Q150 127 111 111
+             Q99 130 79 145 Z"
+          fill="url(#hairColor)"/>
+
+        <!-- Eyebrows -->
+        <path d="M104 153 Q120 140 137 152"
+              fill="none" stroke="#583025" stroke-width="5"
+              stroke-linecap="round"/>
+        <path d="M163 152 Q180 140 196 153"
+              fill="none" stroke="#583025" stroke-width="5"
+              stroke-linecap="round"/>
+
+        <!-- Eyeshadow -->
+        <path id="shadowLeft"
+          d="M101 166 Q120 147 140 166 Q120 183 101 166 Z"
+          fill="#d58aaf" opacity="0.65"/>
+        <path id="shadowRight"
+          d="M160 166 Q180 147 199 166 Q180 183 160 166 Z"
+          fill="#d58aaf" opacity="0.65"/>
+
+        <!-- Eyes -->
+        <path d="M102 170 Q120 153 139 170 Q120 184 102 170"
+              fill="white"/>
+        <path d="M161 170 Q180 153 198 170 Q180 184 161 170"
+              fill="white"/>
+
+        <ellipse cx="121" cy="169" rx="7" ry="9" fill="#75452f"/>
+        <ellipse cx="180" cy="169" rx="7" ry="9" fill="#75452f"/>
+        <circle cx="123" cy="166" r="3" fill="white"/>
+        <circle cx="182" cy="166" r="3" fill="white"/>
+
+        <!-- Eyeliner -->
+        <path id="linerLeft"
+          d="M101 169 Q120 151 140 169"
+          fill="none" stroke="#39202c" stroke-width="2.5"
+          stroke-linecap="round"/>
+        <path id="linerRight"
+          d="M160 169 Q180 151 199 169"
+          fill="none" stroke="#39202c" stroke-width="2.5"
+          stroke-linecap="round"/>
+
+        <!-- Blush -->
+        <ellipse id="blushLeft" cx="106" cy="207" rx="21" ry="11"
+                 fill="#f27b9c" opacity="0.45"/>
+        <ellipse id="blushRight" cx="194" cy="207" rx="21" ry="11"
+                 fill="#f27b9c" opacity="0.45"/>
+
+        <!-- Nose -->
+        <path d="M150 174 L143 204 Q150 211 158 204"
+              fill="none" stroke="#cf9475" stroke-width="2"
+              stroke-linecap="round"/>
+
+        <!-- Lips -->
+        <path id="lips"
+          d="M126 231 Q138 216 150 225 Q162 216 174 231
+             Q163 249 150 249 Q137 249 126 231 Z"
+          fill="#d94f79" stroke="#bd466c" stroke-width="1.5"/>
+
+        <path d="M134 232 Q150 238 166 232"
+              fill="none" stroke="#ffb1c7" stroke-width="2"/>
+
+        <!-- Earrings -->
+        <circle cx="82" cy="210" r="5" fill="#ffd166"/>
+        <circle cx="218" cy="210" r="5" fill="#ffd166"/>
+
+        <!-- Hair shine -->
+        <path d="M96 91 Q112 62 137 61"
+              fill="none" stroke="#c48a68" stroke-width="4"
+              stroke-linecap="round" opacity="0.6"/>
+      </svg>
+
+      <p class="hint">Choose your favorite colors and give your model a new look! 💕</p>
+    </section>
+
+    <section class="makeup-card">
+      <h2>💄 Makeup Studio</h2>
+
+      <div class="category">
+        <h3>💋 Lipstick</h3>
+        <div class="options" id="lipstickOptions">
+          <button class="swatch active" style="background:#d94f79"
+                  data-type="lipstick" data-color="#d94f79"
+                  aria-label="Rose lipstick" title="Rose"></button>
+          <button class="swatch" style="background:#ff1744"
+                  data-type="lipstick" data-color="#ff1744"
+                  aria-label="Red lipstick" title="Red"></button>
+          <button class="swatch" style="background:#a3165b"
+                  data-type="lipstick" data-color="#a3165b"
+                  aria-label="Berry lipstick" title="Berry"></button>
+          <button class="swatch" style="background:#ff8fab"
+                  data-type="lipstick" data-color="#ff8fab"
+                  aria-label="Pink lipstick" title="Pink"></button>
+          <button class="swatch" style="background:#a64b35"
+                  data-type="lipstick" data-color="#a64b35"
+                  aria-label="Brown lipstick" title="Brown"></button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>🎨 Eyeshadow</h3>
+        <div class="options">
+          <button class="swatch" style="background:#b56b9d"
+                  data-type="shadow" data-color="#b56b9d"
+                  aria-label="Purple eyeshadow" title="Purple"></button>
+          <button class="swatch" style="background:#f3a6bd"
+                  data-type="shadow" data-color="#f3a6bd"
+                  aria-label="Pink eyeshadow" title="Pink"></button>
+          <button class="swatch" style="background:#c9a66b"
+                  data-type="shadow" data-color="#c9a66b"
+                  aria-label="Gold eyeshadow" title="Gold"></button>
+          <button class="swatch" style="background:#80b6b2"
+                  data-type="shadow" data-color="#80b6b2"
+                  aria-label="Mint eyeshadow" title="Mint"></button>
+          <button class="swatch" style="background:#8878ce"
+                  data-type="shadow" data-color="#8878ce"
+                  aria-label="Lavender eyeshadow" title="Lavender"></button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>🌸 Blush</h3>
+        <div class="options">
+          <button class="swatch" style="background:#f27b9c"
+                  data-type="blush" data-color="#f27b9c"
+                  aria-label="Pink blush" title="Pink"></button>
+          <button class="swatch" style="background:#f7a072"
+                  data-type="blush" data-color="#f7a072"
+                  aria-label="Peach blush" title="Peach"></button>
+          <button class="swatch" style="background:#d86b82"
+                  data-type="blush" data-color="#d86b82"
+                  aria-label="Rose blush" title="Rose"></button>
+          <button class="swatch" style="background:#c985a9"
+                  data-type="blush" data-color="#c985a9"
+                  aria-label="Mauve blush" title="Mauve"></button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>💇 Hairstyle</h3>
+        <div class="options">
+          <button class="tool active" data-hair="#39231e">Brunette</button>
+          <button class="tool" data-hair="#a65b2e">Ginger</button>
+          <button class="tool" data-hair="#e2b85d">Blonde</button>
+          <button class="tool" data-hair="#17151d">Black</button>
+          <button class="tool" data-hair="#bd719e">Pink</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>✨ Eyeliner</h3>
+        <div class="options">
+          <button class="tool active" data-liner="#39202c">Classic</button>
+          <button class="tool" data-liner="#7d3c98">Purple</button>
+          <button class="tool" data-liner="#277c78">Teal</button>
+          <button class="tool" data-liner="#c28a22">Gold</button>
+        </div>
+      </div>
+
+      <div class="action">
+        <button id="reset">↺ Reset Look</button>
+        <button id="surprise">✨ Surprise Me!</button>
+      </div>
+
+      <div id="message" aria-live="polite">
+        Welcome to your beauty studio! 💗
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Made with 💗 for Makeup By Leen Amer
+  </footer>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => document.querySelectorAll(selector);
+
+    const defaults = {
+      lipstick: "#d94f79",
+      shadow: "#d58aaf",
+      blush: "#f27b9c",
+      hair: "#39231e",
+      liner: "#39202c"
+    };
+
+    const current = { ...defaults };
+
+    function setMakeup(type, color) {
+      current[type] = color;
+
+      if (type === "lipstick") {
+        $("#lips").setAttribute("fill", color);
+        $("#lips").setAttribute("stroke", color);
+      }
+
+      if (type === "shadow") {
+        $("#shadowLeft").setAttribute("fill", color);
+        $("#shadowRight").setAttribute("fill", color);
+      }
+
+      if (type === "blush") {
+        $("#blushLeft").setAttribute("fill", color);
+        $("#blushRight").setAttribute("fill", color);
+      }
+
+      if (type === "hair") {
+        $("#backHair").setAttribute("fill", color);
+        $("#bangs").setAttribute("fill", color);
+
+        // Update the hair gradient too.
+        const gradient = $("#hairColor");
+        gradient.children[0].setAttribute("stop-color", color);
+        gradient.children[1].setAttribute("stop-color", color);
+      }
+
+      if (type === "liner") {
+        $("#linerLeft").setAttribute("stroke", color);
+        $("#linerRight").setAttribute("stroke", color);
+      }
+    }
+
+    // Apply makeup colors.
+    $$(".swatch").forEach((button) => {
+      button.addEventListener("click", () => {
+        const { type, color } = button.dataset;
+
+        setMakeup(type, color);
+
+        const group = button.parentElement;
+        group.querySelectorAll(".swatch").forEach((item) => {
+          item.classList.remove("active");
+        });
+        button.classList.add("active");
+
+        $("#message").textContent =
+          "Beautiful choice! Your look is getting prettier! 💖";
+      });
+    });
+
+    // Change hair color.
+    $$("[data-hair]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setMakeup("hair", button.dataset.hair);
+
+        $$("[data-hair]").forEach((item) => {
+          item.classList.remove("active");
+        });
+        button.classList.add("active");
+
+        $("#message").textContent = "New hairstyle, new vibes! 💇‍♀️";
+      });
+    });
+
+    // Change eyeliner color.
+    $$("[data-liner]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setMakeup("liner", button.dataset.liner);
+
+        $$("[data-liner]").forEach((item) => {
+          item.classList.remove("active");
+        });
+        button.classList.add("active");
+
+        $("#message").textContent = "Your eyes look amazing! ✨";
+      });
+    });
+
+    function resetGame() {
+      Object.assign(current, defaults);
+
+      Object.entries(defaults).forEach(([type, color]) => {
+        setMakeup(type, color);
+      });
+
+      $$(".swatch").forEach((button) => {
+        button.classList.toggle(
+          "active",
+          button.dataset.type === "lipstick" &&
+          button.dataset.color === defaults.lipstick
+        );
+      });
+
+      $$("[data-hair]").forEach((button) => {
+        button.classList.toggle(
+          "active",
+          button.dataset.hair === defaults.hair
+        );
+      });
+
+      $$("[data-liner]").forEach((button) => {
+        button.classList.toggle(
+          "active",
+          button.dataset.liner === defaults.liner
+        );
+      });
+
+      $("#message").textContent = "Fresh look! Let's start again! 💗";
+    }
+
+    $("#reset").addEventListener("click", resetGame);
+
+    // Pick a random color for every makeup category.
+    $("#surprise").addEventListener("click", () => {
+      const categories = ["lipstick", "shadow", "blush"];
+
+      categories.forEach((type) => {
+        const buttons = [...$$(`[data-type="${type}"]`)];
+        const chosen = buttons[
+          Math.floor(Math.random() * buttons.length)
+        ];
+
+        setMakeup(type, chosen.dataset.color);
+
+        buttons.forEach((button) => {
+          button.classList.toggle("active", button === chosen);
+        });
+      });
+
+      const hairs = [...$$("[data-hair]")];
+      const hair = hairs[Math.floor(Math.random() * hairs.length)];
+      setMakeup("hair", hair.dataset.hair);
+      hairs.forEach((button) => {
+        button.classList.toggle("active", button === hair);
+      });
+
+      const liners = [...$$("[data-liner]")];
+      const liner = liners[Math.floor(Math.random() * liners.length)];
+      setMakeup("liner", liner.dataset.liner);
+      liners.forEach((button) => {
+        button.classList.toggle("active", button === liner);
+      });
+
+      $("#message").textContent =
+        "Surprise! Your new makeup look is ready! 🌸";
+    });
+  </script>
+</body>
+</html>
